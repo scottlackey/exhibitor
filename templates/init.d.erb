@@ -1,0 +1,84 @@
+#!/bin/sh
+
+NAME=exhibitor
+PID_FILE=/var/run/$NAME.pid
+
+[ -r /etc/default/exhibitor ] && . /etc/default/exhibitor
+
+HOSTNAME=$(hostname -f)
+
+DAEMON="java -jar ${EXHIBITOR_HOME}/exhibitor-standalone-<%= scope.lookupvar('::exhibitor::version') %>.jar"
+DAEMON_OPTS="--hostname ${HOSTNAME} ${EXHIBITOR_OPTS}"
+
+start() {
+  if [ -f $PID_FILE ]
+    then
+      PID=`cat $PID_FILE`
+      if [ -z "`ps -ef | awk '{print $2}' | grep "^$PID$"`" ]; then
+        echo "\n$PID_FILE exists, process is already running"
+        exit 0
+      else
+        echo "\n$PID_FILE exists but the process is not running. Deleting $PID_FILE and re-trying"
+        rm -f $PID_FILE
+        start
+      fi
+    else
+        exec $DAEMON $DAEMON_OPTS >> /var/log/exhibitor.log 2>&1 &
+        echo $! > $PID_FILE;
+    fi
+}
+
+stop() {
+  if [ ! -f $PID_FILE ]
+  then
+    echo "\n$PID_FILE does not exist, process is not running"
+    exit 1
+  else
+    kill `cat $PID_FILE`;
+    rm -f $PID_FILE;
+    echo "\n$NAME stopped"
+  fi
+}
+
+status() {
+  if [ -f $PID_FILE ]
+  then
+    PID=`cat $PID_FILE`
+    if [ -z "`ps -ef | awk '{print $2}' | grep "^$PID$"`" ]
+    then
+      echo "$NAME stopped but pid file exists"
+      exit 1
+    else
+      echo "$NAME running with pid $PID"
+      exit 0
+    fi
+  else
+    echo "$NAME stopped"
+    exit 1
+  fi
+}
+
+case "$1" in
+  status)
+    status
+	;;
+  start)
+    echo -n "Starting daemon: "$NAME
+    start
+	;;
+  stop)
+    echo -n "Stopping daemon: "$NAME
+    stop
+	;;
+  restart)
+    echo -n "Restarting daemon: "$NAME
+	  stop
+    start
+	;;
+
+  *)
+	echo "Usage: "$1" {status|start|stop|restart}"
+	exit 1
+esac
+
+exit 0

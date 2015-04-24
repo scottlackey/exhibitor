@@ -1,0 +1,10 @@
+#/etc/default/exhibitor
+
+EXHIBITOR_HOME="<%= @install_dir %>"
+
+EXHIBITOR_OPTS="<%- @defaultfile_opts.sort.each do |k,v|
+  if v.length != 0 -%>
+ --<%= k %> <%= "\\\"#{v}\\\"" -%>
+<%-
+  end
+end -%>"
