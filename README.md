@@ -1,28 +1,28 @@
-#puppet-zookeeper
+#puppet-exhibitor
 
 [![Puppet
 Forge](http://img.shields.io/puppetforge/v/deric/zookeeper.svg)](https://forge.puppetlabs.com/deric/zookeeper) [![Build Status](https://travis-ci.org/deric/puppet-zookeeper.png?branch=master)](https://travis-ci.org/deric/puppet-zookeeper)
 
-A puppet receipt for [Apache Zookeeper](http://zookeeper.apache.org/). ZooKeeper is a high-performance coordination service for maintaining configuration information, naming, providing distributed synchronization, and providing group services.
+A puppet module for [Exhibitor](https://github.com/Netflix/exhibitor). Exhibitor is a zookeeper management system developed at Netflix
 
 ## Requirements
 
   * Puppet 2.7, Puppet 3.x
   * Ruby 1.8.7, 1.9.3, 2.0.0, 2.1.x
-  * binary package of ZooKeeper
+  * maven
 
 ## Basic Usage:
 
 ```puppet
-class { 'zookeeper': }
+class { 'exhibitor': }
 ```
 
 ### Quorum
 
-For setting up a quorum of ZooKeeper you should list all nodes in the quorum:
+For setting up a quorum of Exhibitor nodes you should list all nodes in the quorum:
 
 ```puppet
-class { 'zookeeper':
+class { 'exhibitor':
   servers => ['192.168.1.1', '192.168.1.2', '192.168.1.3']
 }
 ```
