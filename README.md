@@ -3,8 +3,8 @@
 #### Table of Contents
 
 1. [Overview](#overview)
-2. [Module Description - What the module does and why it is useful](#module-description)
-3. [Setup - The basics of getting started with exhibitor](#setup)
+2. [Module Description ](#module-description)
+3. [Setup ](#setup)
     * [What exhibitor affects](#what-exhibitor-affects)
     * [Setup requirements](#setup-requirements)
     * [Beginning with exhibitor](#beginning-with-exhibitor)
@@ -15,65 +15,66 @@
 
 ## Overview
 
-A one-maybe-two sentence summary of what the module does/what problem it solves.
-This is your 30 second elevator pitch for your module. Consider including
-OS/Puppet version it works with.
+Puppet module for managing/installing exhibitor for Apache zookeeper. Works with Ubuntu 12.04 and 14.04,
+possibly other distros. Requires maven
 
 ## Module Description
 
-If applicable, this section should have a brief description of the technology
-the module integrates with and what that integration enables. This section
-should answer the questions: "What does this module *do*?" and "Why would I use
-it?"
-
-If your module has a range of functionality (installation, configuration,
-management, etc.) this is the time to mention it.
+This module downloads a POM file for exhibitor and uses it as the configuration for a Maven build resulting
+in  a .jar file in the installation directory. The configuration options available in the exhibitor config file 
+exhibitor.properties can be passed through from the manifest calling the class.
 
 ## Setup
+class { 'exhibitor':
+    servers => ['zk-00-01.domain.com', 'zk-00-02.domain.com'],
+  }
+
 
 ### What exhibitor affects
 
-* A list of files, packages, services, or operations that the module will alter,
-  impact, or execute on the system it's installed on.
-* This is a great place to stick any warnings.
-* Can be in list or paragraph form.
+* /etc/default/exhibitor
+* /etc/init.d/exhibitor
+* $install_dir/exhibitor.properties
+* $install_dir/exhibitor-stndalone-${version}.jar
 
 ### Setup Requirements **OPTIONAL**
 
-If your module requires anything extra before setting up (pluginsync enabled,
-etc.), mention it here.
+exhibitor requires a list of servers, although it will default to 'localhost' for a standalone
 
 ### Beginning with exhibitor
-
-The very basic steps needed for a user to get the module up and running.
-
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you may wish to include an additional section here: Upgrading
-(For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
+class { 'exhibitor':
+    servers => ['zk-00-01.domain.com', 'zk-00-02.domain.com'],
+  }
 
 ## Usage
 
-Put the classes, types, and resources for customizing, configuring, and doing
-the fancy stuff with your module here.
+Although you may want to modify the defaults for exhibitor.properties, you should set your own preferences for these
+settings based on your zookeeper installation(s):
+exhibitor version $version = '1.5.5',
+exhibitor install dir $install_dir = '/opt/exhibitor',
+exhibitor conf dir $conf_dir = '/etc/exhibitor',
+other exhibitor servers to monitor $servers = ['localhost'],
+/etc/default/exhibitor settings $defaultfile_opts = {
+    'port'        => '8080',
+    'configtype'  => 'file',
+    'fsconfigdir' =>  '/opt/exhibitor',
+    'hostname'    =>  "$::fqdn",
+  },
+zookeeper settings
+$zk_data_dir = '/mnt/zookeeper/data',
+$zk_log_dir = '/mnt/zookeeper/log',
+$zk_install_dir = '/usr/share/zookeeper'
+
 
 ## Reference
 
-Here, list the classes, types, providers, facts, etc contained in your module.
-This section should include all of the under-the-hood workings of your module so
-people know what the module is touching on their system but don't need to mess
-with things. (We are working on automating this section!)
+manifests: init.pp install.pp, config.pp, service.pp
 
 ## Limitations
 
-This is where you list OS compatibility, version compatibility, etc.
+only Ubuntu 12.04 and 14.04 so far
 
 ## Development
 
-Since your module is awesome, other users will want to play with it. Let them
-know what the ground rules for contributing are.
+please contribute!
 
-## Release Notes/Contributors/Etc **Optional**
-
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You may also add any additional sections you feel are
-necessary or important to include here. Please use the `## ` header.
