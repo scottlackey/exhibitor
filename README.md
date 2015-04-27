@@ -33,24 +33,27 @@ class { 'exhibitor':
 
 
 ### What exhibitor affects
-
+```sh
 * /etc/default/exhibitor
 * /etc/init.d/exhibitor
 * $install_dir/exhibitor.properties
 * $install_dir/exhibitor-stndalone-${version}.jar
-
+```
 ### Setup Requirements **OPTIONAL**
 
 exhibitor requires a list of servers, although it will default to 'localhost' for a standalone
 
 ### Beginning with exhibitor
+```puppet
 class { 'exhibitor':
     servers => ['zk-00-01.domain.com', 'zk-00-02.domain.com'],
   }
+```
 
 ## Usage
 
 Although you may want to modify the defaults for exhibitor.properties, you should set your own preferences for these
+```
 settings based on your zookeeper installation(s):
 exhibitor version $version = '1.5.5',
 exhibitor install dir $install_dir = '/opt/exhibitor',
@@ -66,6 +69,7 @@ zookeeper settings
 $zk_data_dir = '/mnt/zookeeper/data',
 $zk_log_dir = '/mnt/zookeeper/log',
 $zk_install_dir = '/usr/share/zookeeper'
+```
 
 
 ## Reference
