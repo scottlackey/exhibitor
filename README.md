@@ -1,4 +1,5 @@
-# exhibitor
+# Exhibitor
+============
 
 #### Table of Contents
 
@@ -16,7 +17,8 @@
 ## Overview
 
 Puppet module for managing/installing exhibitor for Apache zookeeper. Works with Ubuntu 12.04 and 14.04,
-possibly other distros. Requires maven
+possibly other distros.
+Uses [Apache Maven](http://maven.apache.org) command line to download the artifacts.
 
 ## Module Description
 
