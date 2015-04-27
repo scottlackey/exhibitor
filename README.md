@@ -27,9 +27,11 @@ in  a .jar file in the installation directory. The configuration options availab
 exhibitor.properties can be passed through from the manifest calling the class.
 
 ## Setup
+```puppet
 class { 'exhibitor':
     servers => ['zk-00-01.domain.com', 'zk-00-02.domain.com'],
   }
+```
 
 
 ### What exhibitor affects
