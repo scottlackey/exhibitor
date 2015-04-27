@@ -1,4 +1,5 @@
 # Exhibitor
+[![Build Status](https://travis-ci.org/scottlackey/exhibitor.png?branch=master)](https://travis-ci.org/scottlackey/exhibitor)
 ============
 
 #### Table of Contents
