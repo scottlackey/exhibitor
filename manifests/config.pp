@@ -52,7 +52,7 @@ class exhibitor::config(
     mode   => "0644",
     owner  => 'root',
     group  => 'root',
-    content => template('exhibitor/default.erb')
+    content => template('exhibitor/etc/default/exhibitor.erb')
   }
   file { "${install_dir}/exhibitor.properties":
     ensure  => present,

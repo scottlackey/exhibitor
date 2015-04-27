@@ -1,11 +1,10 @@
 class exhibitor(
   $version = '1.5.5',
   $install_dir = '/opt/exhibitor',
-  $install_source = "http://search.maven.org/remotecontent?filepath=com/netflix/exhibitor/exhibitor-standalone/${version}",
   $conf_dir = '/etc/exhibitor',
   $servers = ['localhost'],
   $defaultfile_opts = {
-    'port'        => '9090',
+    'port'        => '8080',
     'configtype'  => 'file',
     'fsconfigdir' =>  '/opt/exhibitor',
     'hostname'    =>  "$::fqdn",
@@ -13,7 +12,7 @@ class exhibitor(
   $zk_data_dir = '/mnt/zookeeper/data',
   $zk_log_dir = '/mnt/zookeeper/log',
   $zk_install_dir = '/usr/share/zookeeper',
-  #properties options
+  #exhibitor.properties options
 
   $rolling_hostnames='',
   $rolling_hostnames_index='',
@@ -55,11 +54,8 @@ class exhibitor(
   $log4j_properties='',
   $observer_threshold='999',
 ) {
+  require 'maven'
   contain exhibitor::install
   contain exhibitor::config
   contain exhibitor::service
-  if $has_maven == 'false' {
-    require 'maven'
-  }
-
 }

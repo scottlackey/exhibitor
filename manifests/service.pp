@@ -1,13 +1,14 @@
 class exhibitor::service(
-  $install_dir = $exhibitor::install_dir,
-  $config_dir = $exhibitor::config_dir
+  $version = $exhibitor::version,
 ) {
 
   file { '/etc/init.d/exhibitor':
     ensure  => present,
-    content => template('exhibitor/init.d.erb'),
+    owner   => 'root',
+    group   => 'root',
     mode    => '0755',
-    require => Exec['build-exhibitor']
+    content => template('exhibitor/etc/init.d/exhibitor.erb'),
+    require => Exec['build-exhibitor'],
   }
 
   service { 'exhibitor':

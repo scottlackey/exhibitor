@@ -1,168 +1,79 @@
-#puppet-exhibitor
+# exhibitor
 
-[![Puppet
-Forge](http://img.shields.io/puppetforge/v/deric/zookeeper.svg)](https://forge.puppetlabs.com/deric/zookeeper) [![Build Status](https://travis-ci.org/deric/puppet-zookeeper.png?branch=master)](https://travis-ci.org/deric/puppet-zookeeper)
+#### Table of Contents
 
-A puppet module for [Exhibitor](https://github.com/Netflix/exhibitor). Exhibitor is a zookeeper management system developed at Netflix
+1. [Overview](#overview)
+2. [Module Description - What the module does and why it is useful](#module-description)
+3. [Setup - The basics of getting started with exhibitor](#setup)
+    * [What exhibitor affects](#what-exhibitor-affects)
+    * [Setup requirements](#setup-requirements)
+    * [Beginning with exhibitor](#beginning-with-exhibitor)
+4. [Usage - Configuration options and additional functionality](#usage)
+5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
+5. [Limitations - OS compatibility, etc.](#limitations)
+6. [Development - Guide for contributing to the module](#development)
 
-## Requirements
+## Overview
 
-  * Puppet 2.7, Puppet 3.x
-  * Ruby 1.8.7, 1.9.3, 2.0.0, 2.1.x
-  * maven
+A one-maybe-two sentence summary of what the module does/what problem it solves.
+This is your 30 second elevator pitch for your module. Consider including
+OS/Puppet version it works with.
 
-## Basic Usage:
+## Module Description
 
-```puppet
-class { 'exhibitor': }
-```
+If applicable, this section should have a brief description of the technology
+the module integrates with and what that integration enables. This section
+should answer the questions: "What does this module *do*?" and "Why would I use
+it?"
 
-### Quorum
+If your module has a range of functionality (installation, configuration,
+management, etc.) this is the time to mention it.
 
-For setting up a quorum of Exhibitor nodes you should list all nodes in the quorum:
+## Setup
 
-```puppet
-class { 'exhibitor':
-  servers => ['192.168.1.1', '192.168.1.2', '192.168.1.3']
-}
-```
-Currently first ZooKeeper will have `ID = 1`. This would produce following configuration:
-```
-server.1=192.168.1.1:2888:3888
-server.2=192.168.1.2:2888:3888
-server.3=192.168.1.3:2888:3888
-```
-where first port is `election_port` and second one `leader_port`. Both ports could be customized for each ZooKeeper instance.
+### What exhibitor affects
 
-```puppet
-class { 'zookeeper':
-  election_port => 2889,
-  leader_port   => 3889,
-  servers       => ['192.168.1.1', '192.168.1.2', '192.168.1.3']
-}
-```
+* A list of files, packages, services, or operations that the module will alter,
+  impact, or execute on the system it's installed on.
+* This is a great place to stick any warnings.
+* Can be in list or paragraph form.
 
-### Setting IP address
+### Setup Requirements **OPTIONAL**
 
-If `$::ipaddress` is not your public IP (e.g. you are using Docker) make sure to setup correct IP:
+If your module requires anything extra before setting up (pluginsync enabled,
+etc.), mention it here.
 
-```puppet
-class { 'zookeeper':
-  client_ip => $::ipaddress_eth0
-}
-```
+### Beginning with exhibitor
 
-or in Hiera:
+The very basic steps needed for a user to get the module up and running.
 
-```yaml
-zookeeper::client_ip: "%{::ipaddress_eth0}"
-```
+If your most recent release breaks compatibility or requires particular steps
+for upgrading, you may wish to include an additional section here: Upgrading
+(For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
 
-This is a workaround for a a [Facter issue](https://tickets.puppetlabs.com/browse/FACT-380).
+## Usage
 
-##  Parameters
+Put the classes, types, and resources for customizing, configuring, and doing
+the fancy stuff with your module here.
 
-   - `id` - cluster-unique zookeeper's instance id (1-255)
-   - `datastore`
-   - `log_dir`
-   - `purge_interval` - automatically will delete zookeeper logs (available since 3.4.0)
-   - `snap_retain_count` - number of snapshots that will be kept after purging (since 3.4.0)
+## Reference
 
-and many others, see the `init.pp` file for more details.
+Here, list the classes, types, providers, facts, etc contained in your module.
+This section should include all of the under-the-hood workings of your module so
+people know what the module is touching on their system but don't need to mess
+with things. (We are working on automating this section!)
 
-If your distribution has multiple packages for ZooKeeper, you can provide all package names
-as an array.
+## Limitations
 
-```puppet
-class { 'zookeeper':
-  packages => ['zookeeper', 'zookeeper-java']
-}
-```
+This is where you list OS compatibility, version compatibility, etc.
 
-## Hiera Support
+## Development
 
-All parameters could be defined in hiera files, e.g. `common.yaml`, `Debian.yaml` or `zookeeper.yaml`:
+Since your module is awesome, other users will want to play with it. Let them
+know what the ground rules for contributing are.
 
-```yaml
-zookeeper::id: 1
-zookeeper::client_port: 2181
-zookeeper::datastore: '/var/lib/zookeeper'
-```
+## Release Notes/Contributors/Etc **Optional**
 
-## Cloudera package
-
-In Cloudera distribution ZooKeeper package does not provide init scripts (same as in Debian). Package containing init scripts
-is called `zookeeper-server` and the service as well. Moreover there's initialization script which should be called after installation.
-So, the configuration might look like this:
-
-```puppet
-class { 'zookeeper':
-  packages             => ['zookeeper', 'zookeeper-server'],
-  service_name         => 'zookeeper-server',
-  initialize_datastore => true
-}
-```
-
-### Managing repository
-
-For RedHat family curretly we support also managing an yum repo. It can be enabled with `repo` parameter:
-
-```puppet
-class { 'zookeeper':
-  repo => 'cloudera'
-}
-```
-
-
-## Java installation
-
-Default: `false`
-
-By changing these two parameters you can ensure, that given Java package will be installed before ZooKeeper packages.
-
-```puppet
-class { 'zookeeper':
-  install_java => true,
-  java_package => 'openjdk-7-jre-headless'
-}
-```
-
-## Install
-
-### librarian (recommended)
-
-For [puppet-librarian](https://github.com/rodjek/librarian-puppet) just add to `Puppetfile`
-
-from Forge:
-```ruby
-mod 'deric/zookeeper'
-```
-
-latest (development) version from GitHub
-```ruby
-mod 'deric/zookeeper', :git => 'git://github.com/deric/puppet-zookeeper.git'
-```
-
-### submodules
-
-If you are versioning your puppet conf with git just add it as submodule, from your repository root:
-
-    git submodule add git://github.com/deric/puppet-zookeeper.git modules/zookeeper
-
-## Dependencies
-
-  * stdlib `> 2.3.3` - function `ensure_resources` is required
-
-## Supported platforms
-
-  * Debian/Ubuntu
-    * Debian 6 Squeeze: you can get ZooKeeper package from [Wheezy](http://packages.debian.org/wheezy/zookeeper) or [Sid](http://packages.debian.org/sid/zookeeper) repo.
-    * Debian 7 Wheezy: available in apt repository
-  * RedHat/CentOS/Fedora
-
-### Tested on:
-
-  * Debian 6 Squeeze, 7 Wheezy
-  * Ubuntu 12.04.03 LTS, 14.04
-  * CentOS 6
-
+If you aren't using changelog, put your release notes here (though you should
+consider using changelog). You may also add any additional sections you feel are
+necessary or important to include here. Please use the `## ` header.
