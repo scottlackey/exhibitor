@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "author": "Scott Lackey",
   "summary": "Manages Exhibitor for zookeeper nodes",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "source": "https://github.com/scottlackey/exhibitor",
   "project_page": "https://github.com/scottlackey/exhibitor",
   "issues_url": "https://github.com/scottlackey/exhibitor/issues",
