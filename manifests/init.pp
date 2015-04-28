@@ -1,3 +1,4 @@
+#exhibitor init class
 class exhibitor(
   $version = '1.5.5',
   $install_dir = '/opt/exhibitor',
@@ -7,7 +8,7 @@ class exhibitor(
     'port'        => '8080',
     'configtype'  => 'file',
     'fsconfigdir' =>  '/opt/exhibitor',
-    'hostname'    =>  "$::fqdn",
+    'hostname'    =>  $fqdn,
   },
   $zk_data_dir = '/mnt/zookeeper/data',
   $zk_log_dir = '/mnt/zookeeper/log',

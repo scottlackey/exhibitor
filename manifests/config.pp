@@ -1,3 +1,4 @@
+#exhibitor::config
 class exhibitor::config(
   $defaultfile_opts = $exhibitor::defaultfile_opts,
   $install_dir = $exhibitor::install_dir,
@@ -49,16 +50,16 @@ class exhibitor::config(
 
   file { '/etc/default/exhibitor':
     ensure  => present,
-    mode   => "0644",
-    owner  => 'root',
-    group  => 'root',
+    mode    => '0644',
+    owner   => 'root',
+    group   => 'root',
     content => template('exhibitor/etc/default/exhibitor.erb')
   }
   file { "${install_dir}/exhibitor.properties":
     ensure  => present,
-    mode   => "0644",
-    owner  => 'root',
-    group  => 'root',
+    mode    => '0644',
+    owner   => 'root',
+    group   => 'root',
     content => template('exhibitor/exhibitor.properties.erb'),
     notify  => Class['exhibitor::service'],
   }

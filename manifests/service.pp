@@ -1,3 +1,4 @@
+#exhibitor::service
 class exhibitor::service(
   $version = $exhibitor::version,
 ) {
@@ -12,7 +13,7 @@ class exhibitor::service(
   }
 
   service { 'exhibitor':
-    ensure => 'running',
+    ensure  => 'running',
     require => File['/etc/init.d/exhibitor']
   }
 }
