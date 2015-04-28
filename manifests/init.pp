@@ -57,7 +57,7 @@ class exhibitor(
   $observer_threshold='999',
 ) {
   require 'maven'
-  class { 'exibitor::install':
+  class { 'exhibitor::install':
     version     => $exhibitor::version,
     install_dir => $exhibitor::install_dir,
     pom_url     => $exhibitor::pom_url,
