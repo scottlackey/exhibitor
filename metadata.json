@@ -1,6 +1,6 @@
 {
   "name": "slackey-exhibitor",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Scott Lackey",
   "summary": "Manages Exhibitor for zookeeper nodes",
   "license": "Apache-2.0",

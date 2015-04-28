@@ -66,11 +66,11 @@ other exhibitor servers to monitor $servers = ['localhost'],
     'port'        => '8080',
     'configtype'  => 'file',
     'fsconfigdir' =>  '/opt/exhibitor',
-    'hostname'    =>  "$::fqdn",
+    'hostname'    =>  $::fqdn,
   },
 zookeeper settings
-$zk_data_dir = '/mnt/zookeeper/data',
-$zk_log_dir = '/mnt/zookeeper/log',
+$zk_data_dir    = '/mnt/zookeeper/data',
+$zk_log_dir     = '/mnt/zookeeper/log',
 $zk_install_dir = '/usr/share/zookeeper'
 ```
 
@@ -81,7 +81,7 @@ manifests: init.pp install.pp, config.pp, service.pp
 
 ## Limitations
 
-only Ubuntu 12.04 and 14.04 so far
+only tested on Ubuntu 12.04 and 14.04 so far
 
 ## Development
 
