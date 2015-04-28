@@ -1,8 +1,8 @@
 {
   "name": "slackey-exhibitor",
   "version": "0.1.2",
-  "author": "Scott Lackey",
-  "summary": "Manages Exhibitor for zookeeper nodes",
+  "author": "Scott Lackey sudosudash@gmail.com",
+  "summary": "Manages Exhibitor for zookeeper nodes with puppet",
   "license": "Apache-2.0",
   "source": "https://github.com/scottlackey/exhibitor",
   "project_page": "https://github.com/scottlackey/exhibitor",
