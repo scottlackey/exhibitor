@@ -10,10 +10,9 @@ class exhibitor(
     'fsconfigdir' =>  '/opt/exhibitor',
     'hostname'    =>  $fqdn,
   },
-  $zk_data_dir    = '/mnt/zookeeper/data',
-  $zk_log_dir     = '/mnt/zookeeper/log',
+  $zk_data_dir = '/mnt/zookeeper/data',
+  $zk_log_dir = '/mnt/zookeeper/log',
   $zk_install_dir = '/usr/share/zookeeper',
-  $pom_url        = 'https://raw.githubusercontent.com/Netflix/exhibitor/master/exhibitor-standalone/src/main/resources/buildscripts/standalone/maven/pom.xml',
   #exhibitor.properties options
 
   $rolling_hostnames='',
@@ -57,13 +56,7 @@ class exhibitor(
   $observer_threshold='999',
 ) {
   require 'maven'
-  class { 'exhibitor::install':
-    version     => $exhibitor::version,
-    install_dir => $exhibitor::install_dir,
-    pom_url     => $exhibitor::pom_url,
-  }
-  class { 'exhibitor::config': } ->
-  class { 'exhibitor::service':
-    version     => $exhibitor::version,
-  }
+  contain exhibitor::install
+  contain exhibitor::config
+  contain exhibitor::service
 }
