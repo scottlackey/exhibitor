@@ -56,6 +56,7 @@ class exhibitor(
   $observer_threshold='999',
 ) {
   require 'maven'
+  contain exhibitor
   contain exhibitor::install
   contain exhibitor::config
   contain exhibitor::service
