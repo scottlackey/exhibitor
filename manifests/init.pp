@@ -57,13 +57,13 @@ class exhibitor(
   $observer_threshold='999',
 ) {
   require 'maven'
-  contain { 'exibitor::install':
+  class { 'exibitor::install':
     version     => $exhibitor::version,
     install_dir => $exhibitor::install_dir,
     pom_url     => $exhibitor::pom_url,
   }
-  contain exhibitor::config
-  contain { 'exhibitor::service':
+  class { 'exhibitor::config': } ->
+  class { 'exhibitor::service':
     version     => $exhibitor::version,
   }
 }
