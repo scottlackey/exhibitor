@@ -18,16 +18,19 @@ class exhibitor::install(
     group  => 'root',
   }
 
-  exec { 'download-pom':
-    command => "/usr/bin/curl -o  ${install_dir}/${version}/pom.xml ${pom_url}",
-    creates => "${install_dir}/${version}/pom.xml",
-    require => File["${install_dir}/${version}"],
-    unless  => "/usr/bin/test -f ${install_dir}/${version}/pom.xml",
+  file { "${install_dir}/${version}/pom.xml":
+    ensure  => present,
+    mode    => '0644',
+    owner   => 'root',
+    group   => 'root',
+    content => template('exhibitor/pom.xml.erb'),
+    notify  => Class['exhibitor::service'],
   }
+
   exec { 'build-exhibitor':
     command => "/usr/bin/mvn clean package -f ${install_dir}/${version}/pom.xml && /bin/cp ${install_dir}/${version}/target/exhibitor-${version}.jar ${install_dir}/exhibitor-standalone-${version}.jar",
     creates => "${install_dir}/exhibitor-standalone-${version}.jar",
-    require => [ File[$install_dir], Exec['download-pom'] ],
+    require => File["${install_dir}/${version}/pom.xml"],
     unless  => "/usr/bin/test -f ${install_dir}/exhibitor-standalone-${version}.jar",
     notify  => Service['exhibitor'],
   }
