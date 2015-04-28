@@ -23,7 +23,7 @@ Uses [Apache Maven](http://maven.apache.org) command line to download the artifa
 
 ## Module Description
 
-This module downloads a POM file for exhibitor and uses it as the configuration for a Maven build resulting
+This module includes a POM file for exhibitor and uses it as the configuration for a Maven build resulting
 in  a .jar file in the installation directory. The configuration options available in the exhibitor config file 
 exhibitor.properties can be passed through from the manifest calling the class.
 
