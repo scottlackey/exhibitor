@@ -6,7 +6,13 @@ PID_FILE=/var/run/$NAME.pid
 
 [ -r /etc/default/exhibitor ] && . /etc/default/exhibitor
 
-HOSTNAME=$(hostname -f)
+HOSTNAME_IN_OPTS=$(echo ${EXHIBITOR_OPTS} | grep -oE '\-\-hostname "?[a-z0-9.-]+"?')
+
+if [ "${HOSTNAME_IN_OPTS}" != "" ]; then
+        HOSTNAME=$(echo ${HOSTNAME_IN_OPTS}| sed -E 's;--hostname ;;')
+else
+        HOSTNAME=$(hostname -f)
+fi
 
 DAEMON="java -jar ${EXHIBITOR_HOME}/exhibitor-standalone-<%= scope.lookupvar('::exhibitor::version') %>.jar"
 DAEMON_OPTS="--hostname ${HOSTNAME} ${EXHIBITOR_OPTS}"
