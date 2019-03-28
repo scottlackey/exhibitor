@@ -74,6 +74,22 @@ $zk_log_dir     = '/mnt/zookeeper/log',
 $zk_install_dir = '/usr/share/zookeeper'
 ```
 
+## Hostname
+
+By default, the module will set `--hostname` of exhibitor to the node's FQDN. Unfortunately, machine's FQDN might be unresolvable in some cases, and thus it will prevent communication between nodes in the cluster. When that happens, you should see an error such as following in the exhibitor Web GUI
+
+```
+Hostname: ip-10-188-205-111.internal
+Server Id: 15
+Status: java.net.UnknownHostException: ip-10-188-205-111.internal
+```
+
+In such case, please consider using the instance's IP address to set as hostname rather than allow the module to use the FQDN by default. This can be done by updating your puppet code where you call the module, or use Hiera. An example of Hiera is shown below:
+
+```YAML
+exhibitor::defaultfile_opts:
+  hostname: "%{facts.networking.ip}"
+```
 
 ## Reference
 
